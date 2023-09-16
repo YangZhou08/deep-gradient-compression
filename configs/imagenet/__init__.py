@@ -5,7 +5,7 @@ from torchpack.mtpack.utils.config import Config, configs
 
 # dataset
 configs.dataset = Config(ImageNet)
-configs.dataset.root = '/dataset/imagenet'
+configs.dataset.root = '/rscratch/data/imagenet12/' 
 configs.dataset.num_classes = 1000
 configs.dataset.image_size = 224
 
