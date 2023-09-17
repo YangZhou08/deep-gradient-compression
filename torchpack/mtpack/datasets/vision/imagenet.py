@@ -53,11 +53,11 @@ class ImageNet(Dataset):
         # train = datasets.ImageFolder(root = os.path.join(root, 'train'), 
         root_train = os.path.join(root, 'train') 
         # train = ImageDataset(root = root_train, reader = '', class_map = '', load_bytes = False, transform = train_transforms) 
-        train = ImageFolder(root = root_train, transforms = train_transforms) 
+        train = ImageFolder(root = root_train, transform = train_transforms) 
         # train = datasets.ImageNet(os.path.join(root, 'train'), download = False, transform=train_transforms) 
         root_val = os.path.join(root, 'val') 
         # test = ImageDataset(root = root_val, reader = '', class_map = '', load_bytes = False, transform = test_transforms) 
-        test = ImageFolder(root = root_val, transforms = test_transforms) 
+        test = ImageFolder(root = root_val, transform = test_transforms) 
         # test = datasets.ImageNet(os.path.join(root, 'val'), download=False, transform=test_transforms) 
 
         # sample classes by strided indexing
