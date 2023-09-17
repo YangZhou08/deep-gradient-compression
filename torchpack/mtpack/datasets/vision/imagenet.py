@@ -59,7 +59,7 @@ class ImageNet(Dataset):
         # test = ImageDataset(root = root_val, reader = '', class_map = '', load_bytes = False, transform = test_transforms) 
         test = ImageFolder(root = root_val, transform = test_transforms) 
         # test = datasets.ImageNet(os.path.join(root, 'val'), download=False, transform=test_transforms) 
-
+        '''
         # sample classes by strided indexing
         class_indices = dict()
         for k in range(num_classes):
@@ -79,7 +79,7 @@ class ImageNet(Dataset):
                         class_to_idx[c] = class_indices[idx]
             dataset.wnids, dataset.wnid_to_idx = wnids, wnid_to_idx
             dataset.classes, dataset.class_to_idx = classes, class_to_idx
-
+        ''' 
         if val_ratio is None:
             super(ImageNet, self).__init__(train=train, test=test)
         else:
