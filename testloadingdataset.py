@@ -4,7 +4,8 @@ import os
 
 import torchvision.datasets as datasets
 import torchvision.transforms as transforms
-from torch.utils.data import Subset
+from torch.utils.data import Subset 
+from torchvision.datasets.folder import ImageFolder 
 
 # from .dataset import ImageDataset 
 from dataset import ImageDataset 
@@ -48,7 +49,8 @@ print("root: ", root)
 # train = datasets.ImageNet(root=root, split='train', download=False, transform=train_transforms) 
 # train = datasets.ImageFolder(root = os.path.join(root, 'train'), 
 root_train = os.path.join(root, 'train') 
-train = ImageDataset(root = root_train, reader = '', class_map = '', load_bytes = False) 
+# train = ImageDataset(root = root_train, reader = '', class_map = '', load_bytes = False) 
+train = ImageFolder 
 # train = datasets.ImageNet(os.path.join(root, 'train'), download = False, transform=train_transforms) 
 root_val = os.path.join(root, 'val') 
 test = ImageDataset(root = root_val, reader = '', class_map = '', load_bytes = False) 

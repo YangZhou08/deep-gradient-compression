@@ -9,6 +9,7 @@ from .utils import split_train_val_indices
 from ..dataset import Dataset 
 
 from dataset import ImageDataset 
+from torchvision.datasets.folder import ImageFolder 
 import os 
 
 __all__ = ['ImageNet']
@@ -17,7 +18,7 @@ __all__ = ['ImageNet']
 warnings.filterwarnings('ignore')
 
 
-class ImageNet2(Dataset):
+class ImageNet(Dataset):
     def __init__(self, root, num_classes, image_size, val_ratio=None, extra_train_transforms=None):
         train_transforms_pre = [
             transforms.RandomResizedCrop(image_size),
@@ -51,10 +52,12 @@ class ImageNet2(Dataset):
         # train = datasets.ImageNet(root=root, split='train', download=False, transform=train_transforms) 
         # train = datasets.ImageFolder(root = os.path.join(root, 'train'), 
         root_train = os.path.join(root, 'train') 
-        train = ImageDataset(root = root_train, reader = '', class_map = '', load_bytes = False, transform = train_transforms) 
+        # train = ImageDataset(root = root_train, reader = '', class_map = '', load_bytes = False, transform = train_transforms) 
+        train = ImageFolder(root = root_train, transforms = train_transforms) 
         # train = datasets.ImageNet(os.path.join(root, 'train'), download = False, transform=train_transforms) 
         root_val = os.path.join(root, 'val') 
-        test = ImageDataset(root = root_val, reader = '', class_map = '', load_bytes = False, transform = test_transforms) 
+        # test = ImageDataset(root = root_val, reader = '', class_map = '', load_bytes = False, transform = test_transforms) 
+        test = ImageFolder(root = root_val, transforms = test_transforms) 
         # test = datasets.ImageNet(os.path.join(root, 'val'), download=False, transform=test_transforms) 
 
         # sample classes by strided indexing
@@ -78,7 +81,7 @@ class ImageNet2(Dataset):
             dataset.classes, dataset.class_to_idx = classes, class_to_idx
 
         if val_ratio is None:
-            super(ImageNet2, self).__init__(train=train, test=test)
+            super(ImageNet, self).__init__(train=train, test=test)
         else:
             train_indices, val_indices = split_train_val_indices(
                 targets=train.targets, val_ratio=val_ratio, num_classes=num_classes
@@ -88,9 +91,9 @@ class ImageNet2(Dataset):
             val.transform = test_transforms
             train = Subset(train, indices=train_indices)
             val = Subset(val, indices=val_indices)
-            super(ImageNet2, self).__init__(train=train, val=val, test=test) 
+            super(ImageNet, self).__init__(train=train, val=val, test=test) 
 
-class ImageNet(Dataset): 
+class ImageNet2(Dataset): 
     def __init__(self, root, num_classes, image_size, val_ratio=None, extra_train_transforms=None): 
         train_transforms_pre = [
             transforms.RandomResizedCrop(image_size),
@@ -129,4 +132,4 @@ class ImageNet(Dataset):
         root_val = os.path.join(root, 'val') 
         test = ImageDataset(root = root_val, reader = '', class_map = '', load_bytes = False, transform = test_transforms) 
         # test = datasets.ImageNet(os.path.join(root, 'val'), download=False, transform=test_transforms) 
-        super(ImageNet, self).__init__(train = train, test = test) 
+        super(ImageNet2, self).__init__(train = train, test = test) 
