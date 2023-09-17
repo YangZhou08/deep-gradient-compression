@@ -19,6 +19,8 @@ class TopKClassMeter(Meter):
         masks = indices.eq(targets.view(1, -1).expand_as(indices))
 
         self.num_examples += targets.size(0)
+        print("self.num_correct: ", self.num_correct) 
+        print("masks tanform shape: ", masks[:self.k].view(-1).float().sum(0).shape) 
         self.num_correct += masks[:self.k].view(-1).float().sum(0)
 
     def compute(self):
