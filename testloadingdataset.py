@@ -7,6 +7,7 @@ import torchvision.transforms as transforms
 from torch.utils.data import Subset
 
 # from .dataset import ImageDataset 
+from dataset import ImageDataset 
 
 image_size = 224 
 extra_train_transforms = None 
@@ -44,7 +45,11 @@ test_transforms = [
 test_transforms = transforms.Compose(test_transforms) 
 print("root: ", root) 
 
-train = datasets.ImageNet(root=root, split='train', download=False, transform=train_transforms) 
+# train = datasets.ImageNet(root=root, split='train', download=False, transform=train_transforms) 
+# train = datasets.ImageFolder(root = os.path.join(root, 'train'), 
+root_train = os.path.join(root, 'train') 
+train = ImageDataset(root = root_train, reader = '', class_map = '', load_bytes = False) 
 # train = datasets.ImageNet(os.path.join(root, 'train'), download = False, transform=train_transforms) 
-test = datasets.ImageNet(root=root, split='val', download=False, transform=test_transforms) 
+root_val = os.path.join(root, 'val') 
+test = ImageDataset(root = root_val, reader = '', class_map = '', load_bytes = False) 
 # test = datasets.ImageNet(os.path.join(root, 'val'), download=False, transform=test_transforms) 
