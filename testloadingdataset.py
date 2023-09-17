@@ -1,5 +1,6 @@
 import copy
-import warnings
+import warnings 
+import os 
 
 import torchvision.datasets as datasets
 import torchvision.transforms as transforms
@@ -41,5 +42,6 @@ test_transforms = [
 test_transforms = transforms.Compose(test_transforms) 
 print("root: ", root) 
 
-train = datasets.ImageNet(root=root, split='train', download=False, transform=train_transforms)
-test = datasets.ImageNet(root=root, split='val', download=False, transform=test_transforms) 
+# train = datasets.ImageNet(root=root, split='train', download=False, transform=train_transforms) 
+train = datasets.ImageNet(os.path.join(root, 'train'), download = False, transform=train_transforms) 
+test = datasets.ImageNet(os.path.join(root, 'val'), download=False, transform=test_transforms) 
