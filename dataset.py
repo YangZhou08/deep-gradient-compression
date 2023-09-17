@@ -10,7 +10,7 @@ import torch
 import torch.utils.data as data
 from PIL import Image
 
-from .readers.reader_factory import create_reader 
+from readers.reader_factory import create_reader 
 
 _logger = logging.getLogger(__name__)
 
