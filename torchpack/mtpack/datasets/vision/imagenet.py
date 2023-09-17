@@ -17,7 +17,7 @@ __all__ = ['ImageNet']
 warnings.filterwarnings('ignore')
 
 
-class ImageNet(Dataset):
+class ImageNet2(Dataset):
     def __init__(self, root, num_classes, image_size, val_ratio=None, extra_train_transforms=None):
         train_transforms_pre = [
             transforms.RandomResizedCrop(image_size),
@@ -78,7 +78,7 @@ class ImageNet(Dataset):
             dataset.classes, dataset.class_to_idx = classes, class_to_idx
 
         if val_ratio is None:
-            super(ImageNet, self).__init__(train=train, test=test)
+            super(ImageNet2, self).__init__(train=train, test=test)
         else:
             train_indices, val_indices = split_train_val_indices(
                 targets=train.targets, val_ratio=val_ratio, num_classes=num_classes
@@ -88,4 +88,45 @@ class ImageNet(Dataset):
             val.transform = test_transforms
             train = Subset(train, indices=train_indices)
             val = Subset(val, indices=val_indices)
-            super(ImageNet, self).__init__(train=train, val=val, test=test)
+            super(ImageNet2, self).__init__(train=train, val=val, test=test) 
+
+class ImageNet(Dataset): 
+    def __init__(self, root, num_classes, image_size, val_ratio=None, extra_train_transforms=None): 
+        train_transforms_pre = [
+            transforms.RandomResizedCrop(image_size),
+            transforms.RandomHorizontalFlip()
+        ]
+        train_transforms_post = [
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+        ]
+        if extra_train_transforms is not None:
+            if not isinstance(extra_train_transforms, list):
+                extra_train_transforms = [extra_train_transforms]
+            for ett in extra_train_transforms:
+                if isinstance(ett, (transforms.LinearTransformation, transforms.Normalize, transforms.RandomErasing)):
+                    train_transforms_post.append(ett)
+                else:
+                    train_transforms_pre.append(ett)
+        train_transforms = transforms.Compose(train_transforms_pre + train_transforms_post)
+
+        test_transforms = [
+            transforms.Resize(int(image_size / 0.875)),
+            transforms.CenterCrop(image_size),
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+        ]
+        test_transforms = transforms.Compose(test_transforms) 
+        print("root: ", root) 
+
+        # train = datasets.ImageNet(root=root, split='train', download=False, transform=train_transforms) 
+        # test = datasets.ImageNet(root=root, split='val', download=False, transform=test_transforms) 
+        # train = datasets.ImageNet(root=root, split='train', download=False, transform=train_transforms) 
+        # train = datasets.ImageFolder(root = os.path.join(root, 'train'), 
+        root_train = os.path.join(root, 'train') 
+        train = ImageDataset(root = root_train, reader = '', class_map = '', load_bytes = False, transform = train_transforms) 
+        # train = datasets.ImageNet(os.path.join(root, 'train'), download = False, transform=train_transforms) 
+        root_val = os.path.join(root, 'val') 
+        test = ImageDataset(root = root_val, reader = '', class_map = '', load_bytes = False, transform = test_transforms) 
+        # test = datasets.ImageNet(os.path.join(root, 'val'), download=False, transform=test_transforms) 
+        super(ImageNet, self).__init__(train = train, test = test) 
