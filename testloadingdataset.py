@@ -6,10 +6,12 @@ import torchvision.datasets as datasets
 import torchvision.transforms as transforms
 from torch.utils.data import Subset
 
+from .dataset import ImageDataset 
+
 image_size = 224 
 extra_train_transforms = None 
 
-root = '/rscratch/data/imagenet12/' 
+root = '/rscratch/data/imagenet12/imagenet' 
 
 __all__ = ['ImageNet'] 
 
@@ -42,6 +44,7 @@ test_transforms = [
 test_transforms = transforms.Compose(test_transforms) 
 print("root: ", root) 
 
-# train = datasets.ImageNet(root=root, split='train', download=False, transform=train_transforms) 
-train = datasets.ImageNet(os.path.join(root, 'train'), download = False, transform=train_transforms) 
-test = datasets.ImageNet(os.path.join(root, 'val'), download=False, transform=test_transforms) 
+train = datasets.ImageNet(root=root, split='train', download=False, transform=train_transforms) 
+# train = datasets.ImageNet(os.path.join(root, 'train'), download = False, transform=train_transforms) 
+test = datasets.ImageNet(root=root, split='val', download=False, transform=test_transforms) 
+# test = datasets.ImageNet(os.path.join(root, 'val'), download=False, transform=test_transforms) 
