@@ -21,7 +21,8 @@ class TopKClassMeter(Meter):
         self.num_examples += targets.size(0)
         print("self.num_correct: ", self.num_correct) 
         print("masks tanform shape: ", masks[:self.k].view(-1).float().sum(0).shape) 
-        self.num_correct += masks[:self.k].view(-1).float().sum(0)
+        # self.num_correct += masks[:self.k].view(-1).float().sum(0) 
+        self.num_correct += masks[:self.k].reshape(-1).float().sum(0) 
 
     def compute(self):
         return self.num_correct / max(self.num_examples, 1) * 100.

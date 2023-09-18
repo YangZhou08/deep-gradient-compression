@@ -81,7 +81,7 @@ class ImageNet(Dataset):
             dataset.classes, dataset.class_to_idx = classes, class_to_idx
         ''' 
         if val_ratio is None:
-            super(ImageNet, self).__init__(train=train, test=test)
+            super(ImageNet, self).__init__(train=train, test=test) 
         else:
             train_indices, val_indices = split_train_val_indices(
                 targets=train.targets, val_ratio=val_ratio, num_classes=num_classes
